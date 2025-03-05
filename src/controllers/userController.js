@@ -40,3 +40,8 @@ exports.changePassword = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+/**
+ * TODO: FUNCTION FOR A USER TO RATE A BARBER
+ *                      REVIEWS BABERS PREVIOUS WORK
+ */

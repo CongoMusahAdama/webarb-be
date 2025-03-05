@@ -4,6 +4,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const sequelize = require("./config/db");
+const barberRoutes = require("./routes/barberRoutes");
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.json());
 //route
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/barbers", barberRoutes);
 
 //db config
 sequelize.sync().then(() => console.log("DB Synced"));
