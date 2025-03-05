@@ -20,20 +20,16 @@ const User = sequelize.define("User", {
     
     fullName: {
         type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
+        allowNull: false, // Removed unique constraint
     },
 
     email: {
         type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
+        allowNull: false, // Removed unique constraint
     },
 
     phoneNumber: {
-
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
     },
 
