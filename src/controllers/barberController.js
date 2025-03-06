@@ -3,7 +3,11 @@ const barberService = require ("../services/barberService");
 //create barber
 exports.createBarber = async (req, res) => {
     try {
-        const barber = await barberService.createBarber(req.body);
+        const { fullName, phoneNumber, email, ghanaCardNumber, location, specialization, yearsOfExperience} = req.body;
+        let profileImage = req.file ? req.file.path : null; // Get uploaded profile image
+
+
+        const barber = await barberService.createBarber(fullName, phoneNumber, email, ghanaCardNumber, location, specialization, yearsOfExperience, profileImage);
         res.status(201).json({ message: "Barber created successfully", barber });
     } catch (error) {
         res.status(404).json({ error: error.message });

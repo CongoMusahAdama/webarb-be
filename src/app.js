@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const sequelize = require("./config/db");
 const barberRoutes = require("./routes/barberRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/barbers", barberRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 //db config
 sequelize.sync().then(() => console.log("DB Synced"));
