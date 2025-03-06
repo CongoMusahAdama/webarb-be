@@ -35,7 +35,8 @@ exports.getUserBookings = async (req, res) => { // Fixed typo
 
 exports.getBarberBookings = async (req, res) => {
     try {
-        const barberId = req.barberId;
+        const barberId = req.params.barberId;
+
         const bookings = await BookingService.getBookingsByBarber(barberId);
         res.json({ bookings });
     } catch (error) {
@@ -61,12 +62,14 @@ exports.updateBookingsStatus = async (req, res) => {
 
 exports.rescheduleBooking = async (req, res) => {
     try {
-        const { bookingId, newDate, newTime } = req.body;
+        const { newDate, newTime } = req.body;
+        const { bookingId } = req.params; // Extract bookingId from URL parameters
+
         const requestedBy = req.user.role === "barber" ? "Barber" : "User";
 
         const booking = await BookingService.rescheduleBooking(bookingId, newDate, newTime, requestedBy);
         console.log(`📢 Booking ${bookingId} rescheduled to ${newDate} ${newTime} by ${requestedBy}`);
-        res.status(200).json({ message: "Booking rescheduled", booking });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

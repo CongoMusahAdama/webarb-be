@@ -4,7 +4,6 @@ const Barber = require("../models/Barber");
 class BookingService {
     //user create a booking
     static async createBooking({ userId, barberId, date, time, location, style, styleImage }) {
-        //validate i barber exists
         const barber = await Barber.findByPk(barberId);
         if (!barber) throw new Error("Barber not found");
 
@@ -21,7 +20,7 @@ class BookingService {
             userId, barberId, date, time, location, style, styleImage,
             status: "pending", 
         });
-        //notify barber when bookingis created
+        //notify barber when booking is created
         console.log(`Notify Barber ${barberId}: New booking from User ${userId}`);
         return booking;
     }
@@ -35,15 +34,16 @@ class BookingService {
         return await Booking.findAll({ where: { barberId } });
     }
 
-    //ERROR FIXING
+    
     static async updateBookingStatus(bookingId, status){
-        constbooking = await Booking.findByPk(bookingId);
+        const booking = await Booking.findByPk(bookingId);
+
         if(!booking) throw new Error('Booking not found');
 
         booking.status = status;
         await booking.save();
 
-        //notificarion placeholder
+        //notification placeholder
         if(status === "accepted"){
             console.log(`Notify User ${booking.userId}: Your booking has been accepted.`);
         }else if (status ==="rejected"){
@@ -53,14 +53,17 @@ class BookingService {
         }
 
         return booking;  
-
     }
 
     static async rescheduleBooking(bookingId, newDate, newTime, requestedBy){
+        console.log(`Received bookingId: ${bookingId}`); // Log booking ID
         const booking = await Booking.findByPk(bookingId);
-        if (!booking) throw new Error("Booking not found");
+        if (!booking) {
+            console.log("Booking not found");
+            throw new Error("Booking not found");
+        }
 
-        if (booking.status !== "accepted") throw new Error("Only accepted bookings can be reschedule");
+        if (booking.status !== "accepted") throw new Error("Only accepted bookings can be rescheduled");
 
         booking.date = newDate;
         booking.time = newTime;
@@ -68,9 +71,8 @@ class BookingService {
         await booking.save();
 
         //notify barber when booking has been rescheduled
-        console.log(`Notify Barber ${booking.barberId} & User ${booking.userId}: Booking rescheduled by ${requestedBy} `)
-        return bookings;
-
+        console.log(`Notify Barber ${booking.barberId} & User ${booking.userId}: Booking rescheduled by ${requestedBy}`);
+        return booking;  
     }
 }
 
