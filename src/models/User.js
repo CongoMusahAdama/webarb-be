@@ -1,54 +1,31 @@
-/*
-id: pk
-fullname
-email
-phoneNumber
-password
-profileImage
-Role default is a user
-*/
-
-const { DataTypes } = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const User = sequelize.define("User", {
+
+class User extends Model {}
+
+User.init({
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    
-    fullName: {
-        type: DataTypes.STRING,
-        allowNull: false, // Removed unique constraint
-    },
-
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false, // Removed unique constraint
-    },
-
-    phoneNumber: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-
     password: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-
-    profileImage: {
-        type: DataTypes.STRING,
-        allowNull: true, // TODO: later turn it into false
-    },
-
     role: {
-        type: DataTypes.ENUM("user", "barber", "admin"),
-        defaultValue: "user",
+        type: DataTypes.ENUM,
+        values: ['user', 'barber', 'admin'],
+        defaultValue: 'user', // Default role is user
     },
 }, {
-    timestamps: true,
+    sequelize,
+    modelName: "User",
 });
 
 module.exports = User;
