@@ -1,3 +1,4 @@
+const { STRING } = require("sequelize");
 const BookingService = require("../services/bookingService");
 
 exports.createBooking = async (req, res) => {
