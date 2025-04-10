@@ -11,8 +11,8 @@ router.post("/", authenticate, rbacMiddleware("user"), upload.single("styleImage
 
 router.get("/user/:userId", authenticate, rbacMiddleware("user"), bookingController.getUserBookings); // Users can retrieve their own bookings
 router.get("/barber/:barberId", authenticate, rbacMiddleware("barber"), bookingController.getBarberBookings); // Barbers can see their assigned bookings
-router.patch("/:bookingId/status", authenticate, rbacMiddleware("barber"), bookingController.updateBookingsStatus); // Barbers and Admins can modify bookings
+router.put("/:bookingId/status", authenticate, rbacMiddleware("barber"), bookingController.updateBookingsStatus); // Barbers and Admins can modify bookings
 
-router.patch("/:bookingId/reschedule", authenticate, rbacMiddleware("user"), bookingController.rescheduleBooking); // Users, Barbers, and Admins can reschedule bookings
+router.put("/:bookingId/reschedule", authenticate, rbacMiddleware("user"), bookingController.rescheduleBooking); // Users, Barbers, and Admins can reschedule bookings
 
 module.exports = router;

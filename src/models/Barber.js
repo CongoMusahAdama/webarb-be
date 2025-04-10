@@ -15,12 +15,12 @@ const Barber = sequelize.define("Barber", {
   phoneNumber: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    //unique: true,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    //unique: true,
     validate: {
       isEmail: true,
     },
@@ -28,7 +28,7 @@ const Barber = sequelize.define("Barber", {
   ghanaCardNumber: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    //unique: true,
     validate: {
       len: [8, 15], // Ghana Card number length validation
     },
