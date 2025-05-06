@@ -1,7 +1,7 @@
-const { STRING } = require("sequelize");
-const BookingService = require("../services/bookingService");
+import { STRING } from "sequelize";
+import BookingService from "../services/bookingService.js";
 
-exports.createBooking = async (req, res) => {
+export const createBooking = async (req, res) => {
     try {
         const { barberId, date, time, location, style } = req.body;
         const userId = req.user.id;
@@ -24,7 +24,7 @@ exports.createBooking = async (req, res) => {
     }
 };
 
-exports.getUserBookings = async (req, res) => { // Fixed typo
+export const getUserBookings = async (req, res) => { // Fixed typo
     try {
         const userId = req.user.id;
         const bookings = await BookingService.getBookingsByUser(userId);
@@ -34,7 +34,7 @@ exports.getUserBookings = async (req, res) => { // Fixed typo
     }
 };
 
-exports.getBarberBookings = async (req, res) => {
+export const getBarberBookings = async (req, res) => {
     try {
         const barberId = req.params.barberId;
 
@@ -45,7 +45,7 @@ exports.getBarberBookings = async (req, res) => {
     }
 };
 
-exports.updateBookingsStatus = async (req, res) => {
+export const updateBookingsStatus = async (req, res) => {
     try {
         const { status } = req.body;
         const { bookingId } = req.params;
@@ -61,7 +61,7 @@ exports.updateBookingsStatus = async (req, res) => {
     }
 };
 
-exports.rescheduleBooking = async (req, res) => {
+export const rescheduleBooking = async (req, res) => {
     try {
         const { newDate, newTime } = req.body;
         const { bookingId } = req.params; // Extract bookingId from URL parameters

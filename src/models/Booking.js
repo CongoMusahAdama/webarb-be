@@ -1,59 +1,52 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
-const Barber = require("./Barber");
-const User = require("./User");
+import mongoose from "mongoose"; 
+import Barber from "./Barber.js"; 
+import User from "./User.js"; 
 
-const Booking = sequelize.define("Booking", {
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-    },
-    userId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: User,
-            key: "id",
-        },
-    },
-    barberId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Barber,
-            key: "id",
-        },
-    },
-    date: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-    },
-    time: {
-        type: DataTypes.TIME,
-        allowNull: false,
-    },
-    location: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    style: {
-        type: DataTypes.STRING,
-        allowNull: true, // Optional: User may not select a style 
-    },
-    styleImage: {
-        type: DataTypes.STRING, //url to upload a style image 
-        allowNull: true,
-    },
-    status: {
-        type: DataTypes.ENUM("pending", "accepted", "rejected", "rescheduled"),
-        defaultValue: "pending",
-    },
-}, { timestamps: true });
+const bookingSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',   //reference data modeling
+    required: true,
+  },
 
+  barberId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Barber',
+    required: true,
+  },
 
+  date: {
+    type: Date,
+    required: true,
+  },
 
+  time: {
+    type: String,
+    required: true,
+  },
 
+  location: {
+    type: String,
+    required: true,
+  },
 
+  style: {
+    type: String,
+    default: null,
+  },
 
-module.exports = Booking;
+  styleImage: {
+    type: String,
+    default: null,
+  },
+
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "rejected", "rescheduled"],
+    default: "pending",
+  },
+}, {timestamps: true });
+
+const Booking = mongoose.model("Booking", bookingSchema);
+
+export default Booking;

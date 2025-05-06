@@ -1,68 +1,60 @@
-const Barber = require("../models/Barber");
+import Barber from "../models/Barber.js";
 
-//create a new barber
-exports.createBarber = async (barberData)=>{
+// Create a new barber
+export const createBarber = async (barberData) => {
     const { ghanaCardNumber } = barberData;
 
-    //check if Ghana card is already in use
-    const existingBarber = await Barber.findOne({ where: { ghanaCardNumber } });
+    // Check if Ghana card is already in use
+    const existingBarber = await Barber.findOne({ ghanaCardNumber } );
     if (existingBarber) throw new Error("Ghana card number already registered");
 
     const barber = await Barber.create(barberData);
     return barber;
 };
 
-//Get all barbers
-exports.getAllBarbers = async () =>{
-    return await Barber.findAll({
-        attributes: [
-            "id",
-            "fullName",
-            "phoneNumber",
-            "email",
-            "ghanaCardNumber",
-            "location",
-            "profileImage",
-            "yearsOfExperience",
-            "specialization",
-            "availability",
-            "portfolio",
-            "createdAt",
-        ],
+// Get all barbers
+export const getAllBarbers = async () => {
+    return await Barber.find({}, {
+            fullName: 1,
+            phoneNumber: 1,
+            email: 1,
+            ghanaCardNumber: 1,
+            location: 1,
+            profileImage: 1,
+            yearsOfExperience: 1,
+            specialization: 1,
+            availability: 1,
+            portfolio: 1,
+            createdAt: 1,
     });
 };
 
-
-//Get barber by ID
-exports.getBarberById = async (barberId) =>{
-    const barber = await Barber.findByPk(barberId);
+// Get barber by ID
+export const getBarberById = async (barberId) => {
+    const barber = await Barber.findById(barberId);
     if (!barber) throw new Error("Barber not found");
     return barber;
 };
 
-
-//update barber profile
-exports.updateBarber = async (barberId, updatedData) =>{
-    const barber = await Barber.findByPk(barberId);
+// Update barber by Id
+export const updateBarber = async (barberId, updatedData) => {
+    const barber = await Barber.findByIdAndUpdate(barberId, updatedData, { new: true});
     if (!barber) throw new Error("Barber not found");
-
-    await barber.update(updatedData);
     return barber;
-}
+};
 
-exports.getBarberPortfolio = async (barberId) => {
-    const barber = await Barber.findByPk(barberId);
+// Get barber portfolio
+export const getBarberPortfolio = async (barberId) => {
+    const barber = await Barber.findById(barberId);
     if (!barber) throw new Error("Barber not found");
 
-    return barber.portfolio; 
-}
+    return barber.portfolio;
+};
 
-
-//delete barber profile
-exports.deleteBarber = async (barberId) => {
-    const barber = await Barber.findByPk(barberId);
+// Delete barber profile
+export const deleteBarber = async (barberId) => {
+    const barber = await Barber.findByIdAndDelete(barberId);
     if (!barber) throw new Error("Barber not found");
 
-    await barber.destroy();
-    return { message: "Barber deleted successfully"}
-}
+    return { message: "Barber deleted successfully" };
+};

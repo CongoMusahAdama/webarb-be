@@ -1,5 +1,5 @@
-const Booking = require("../models/Booking");
-const Barber = require("../models/Barber");
+import Booking from "../models/Booking.js";
+import Barber from "../models/Barber.js";
 
 class BookingService {
     //user create a booking
@@ -76,4 +76,4 @@ class BookingService {
     }
 }
 
-module.exports = BookingService;
+export default BookingService;

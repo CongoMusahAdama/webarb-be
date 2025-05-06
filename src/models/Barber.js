@@ -1,64 +1,66 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
+import mongoose from "mongoose";
 
-const Barber = sequelize.define("Barber", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
+const barberSchema = new mongoose.Schema({
+  fullName:{
+    type: String,
+    required: true,
   },
 
-  fullName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   phoneNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    //unique: true,
+    type: String,
+    required: true,
   },
+
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    //unique: true,
+    type: String,
+    required: true,
     validate: {
-      isEmail: true,
+      validator: function(v){
+        return /^([\w-]+(?:\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7})$/.test(v);
+      },
+      message: 'Invalid email formar'
     },
   },
+
+  //TODO: NIA VERIFICATION
   ghanaCardNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    //unique: true,
-    validate: {
-      len: [8, 15], // Ghana Card number length validation
-    },
+    type: String,
+    required: true,
+    minlenght: 8,
+    maxlenght: 15,
   },
+
   location: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
+
   profileImage: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
+
   yearsOfExperience: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+    type: Number,
+    required: true,
   },
+
   specialization: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
+
   availability: {
-    type: DataTypes.STRING,
-    defaultValue: 'yes',
+    type: String,
+    default: 'yes',
   },
 
   portfolio: {
-    type: DataTypes.JSON, // Store an array of image URLs as JSON
-    allowNull: true,
-    defaultValue: [], // Default to an empty array
+    type: [mongoose.Schema.Types.Mixed],
+    default: [],
   },
 }, { timestamps: true });
 
-module.exports = Barber;
+const Barber = mongoose.model('Barber', barberSchema);
+
+export default Barber;

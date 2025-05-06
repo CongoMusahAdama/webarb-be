@@ -1,11 +1,11 @@
-const barberService = require ("../services/barberService");
+import * as barberService from "../services/barberService.js";
 
-//create barber
-exports.createBarber = async (req, res) => {
+
+// Create barber
+export const createBarber = async (req, res) => {
     try {
-        const { fullName, phoneNumber, email, ghanaCardNumber, location, specialization, yearsOfExperience} = req.body;
-        let profileImage = req.file ? req.file.path : null; // Get uploaded profile image
-
+        const { fullName, phoneNumber, email, ghanaCardNumber, location, specialization, yearsOfExperience } = req.body;
+        const profileImage = req.file ? req.file.path : null;
 
         const barber = await barberService.createBarber(fullName, phoneNumber, email, ghanaCardNumber, location, specialization, yearsOfExperience, profileImage);
         res.status(201).json({ message: "Barber created successfully", barber });
@@ -14,8 +14,8 @@ exports.createBarber = async (req, res) => {
     }
 };
 
-//get all barbers
-exports.getAllBarbers = async (req, res) => {
+// Get all barbers
+export const getAllBarbers = async (req, res) => {
     try {
         const barbers = await barberService.getAllBarbers();
         res.status(200).json(barbers);
@@ -24,7 +24,8 @@ exports.getAllBarbers = async (req, res) => {
     }
 };
 
-exports.getBarberById = async (req, res) => {
+// Get barber by ID
+export const getBarberById = async (req, res) => {
     try {
         const barber = await barberService.getBarberById(req.params.id);
         if (!barber) {
@@ -36,9 +37,8 @@ exports.getBarberById = async (req, res) => {
     }
 };
 
-
-// Update a barber
-exports.updateBarber = async (req, res) => {
+// Update barber
+export const updateBarber = async (req, res) => {
     try {
         const barber = await barberService.updateBarber(req.params.id, req.body);
         res.status(200).json({ message: "Barber updated successfully", barber });
@@ -47,8 +47,8 @@ exports.updateBarber = async (req, res) => {
     }
 };
 
-//get barber portfolio 
-exports.getBarberPortfolio = async (req, res) => {
+// Get barber portfolio
+export const getBarberPortfolio = async (req, res) => {
     try {
         const portfolio = await barberService.getBarberPortfolio(req.params.id);
         res.status(200).json({ message: "Barber portfolio retrieved successfully", portfolio });
@@ -57,8 +57,8 @@ exports.getBarberPortfolio = async (req, res) => {
     }
 };
 
-// Delete a barber
-exports.deleteBarber = async (req, res) => {
+// Delete barber
+export const deleteBarber = async (req, res) => {
     try {
         const result = await barberService.deleteBarber(req.params.id);
         res.status(200).json(result);

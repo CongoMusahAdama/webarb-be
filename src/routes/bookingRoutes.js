@@ -1,18 +1,45 @@
-const express = require("express");
-const upload = require("../middleware/upload"); // Middleware for file upload
-const { authenticate } = require("../middleware/authMiddleware");
-const rbacMiddleware = require("../middleware/rbacMiddleware"); // RBAC middleware
-
-const bookingController = require("../controllers/bookingController");
+import express from "express";
+import upload from "../middleware/upload.js"; 
+import { authenticate } from "../middleware/authMiddleware.js";
+import rbacMiddleware from "../middleware/rbacMiddleware.js"; 
+import * as bookingController from "../controllers/bookingController.js"; 
 
 const router = express.Router();
 
-router.post("/", authenticate, rbacMiddleware("user"), upload.single("styleImage"), bookingController.createBooking); // Users and Admins can create bookings
+router.post(
+  "/",
+  authenticate,
+  rbacMiddleware("user"),
+  upload.single("styleImage"),
+  bookingController.createBooking
+);
 
-router.get("/user/:userId", authenticate, rbacMiddleware("user"), bookingController.getUserBookings); // Users can retrieve their own bookings
-router.get("/barber/:barberId", authenticate, rbacMiddleware("barber"), bookingController.getBarberBookings); // Barbers can see their assigned bookings
-router.put("/:bookingId/status", authenticate, rbacMiddleware("barber"), bookingController.updateBookingsStatus); // Barbers and Admins can modify bookings
+router.get(
+  "/user/:userId",
+  authenticate,
+  rbacMiddleware("user"),
+  bookingController.getUserBookings
+);
 
-router.put("/:bookingId/reschedule", authenticate, rbacMiddleware("user"), bookingController.rescheduleBooking); // Users, Barbers, and Admins can reschedule bookings
+router.get(
+  "/barber/:barberId",
+  authenticate,
+  rbacMiddleware("barber"),
+  bookingController.getBarberBookings
+);
 
-module.exports = router;
+router.put(
+  "/:bookingId/status",
+  authenticate,
+  rbacMiddleware("barber"),
+  bookingController.updateBookingsStatus
+);
+
+router.put(
+  "/:bookingId/reschedule",
+  authenticate,
+  rbacMiddleware("user"),
+  bookingController.rescheduleBooking
+);
+
+export default router;

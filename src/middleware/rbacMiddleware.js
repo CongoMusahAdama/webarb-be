@@ -1,6 +1,6 @@
 const rbacMiddleware = (requiredRole) => {
     return (req, res, next) => {
-        const userRole = req.user.role; 
+        const userRole = req.user.role;
 
         if (!userRole) {
             return res.status(403).json({ message: "Access denied. No role found." });
@@ -10,8 +10,8 @@ const rbacMiddleware = (requiredRole) => {
             return res.status(403).json({ message: "Access denied. You do not have permission to perform this action." });
         }
 
-        next(); 
+        next();
     };
 };
 
-module.exports = rbacMiddleware;
+export default rbacMiddleware;

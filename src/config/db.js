@@ -1,19 +1,16 @@
-const { Sequelize } = require("sequelize");
-require("dotenv").config();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-    logging: false,
-});
+dotenv.config();
 
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log("Database Connected, you good to go");
-        return sequelize.sync({ alter: true }); // Use 'alter' to apply changes without dropping tables
-    })
-    .then(() => console.log("DB Synced successfully"))
-    .catch((err) => console.error("Database connection failed, check operational errors:", err));
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DB_URI); 
+    console.log(`MongoDB Connected successfully: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(` MongoDB Connection Error: ${error.message}`);
+    process.exit(1); // Exit process on failure
+  }
+};
 
-module.exports = sequelize;
+export default connectDB;

@@ -1,31 +1,46 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
+import mongoose from "mongoose";
 
+const userSchema = new mongoose.Schema({
+  fullname: {
+    type: String,
+    required: true,
+  },
 
-class User extends Model {}
+  email: {
+    type: String,
+    required: true,
+  },
 
-User.init({
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-    },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    role: {
-        type: DataTypes.ENUM,
-        values: ['user', 'barber', 'admin'],
-        defaultValue: 'user', // Default role is user
-    },
-}, {
-    sequelize,
-    modelName: "User",
-});
+  googleId: {
+    type: String,
+    required: false,
+  },
 
-module.exports = User;
+  password: {
+    type: String,
+    required: function () {
+      return !this.googleId; // Require password only if not using Google
+    },
+  },
+
+  phoneNumber: {
+    type: Number,
+    required: function () {
+      return !this.googleId; // Require phoneNumber only if not using Google
+    },
+  },
+
+  role: {
+    type: String,
+    enum: ['user', 'barber', 'admin'],
+    default: 'user',
+  },
+
+  refreshToken: {
+    type: String,
+  },
+
+}, { timestamps: true });
+
+const User = mongoose.model('User', userSchema);
+export default User;
