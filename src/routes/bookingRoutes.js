@@ -10,7 +10,9 @@ router.post(
   "/",
   authenticate,
   rbacMiddleware("user"),
-  upload.single("styleImage"),
+  upload.fields([
+     { name: "styleImage", maxCount: 3 },
+  ]),
   bookingController.createBooking
 );
 

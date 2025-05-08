@@ -5,6 +5,7 @@ import session from "express-session";
 import passport from "passport";
 import "./config/passport.js"; // Import and initialize Google strategy
 
+
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import barberRoutes from "./routes/barberRoutes.js";
@@ -22,8 +23,8 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  //origin: "http://localhost:8000", // your frontend URL
-  //credentials: true, // important for session cookies
+  origin: "*", // allow all origins for testing
+  credentials: true, // important for session cookies
 }));
 
 app.use(express.json());
@@ -51,6 +52,12 @@ app.use("/api/barbers", barberRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/payments", paymentRoutes);
 app.use("/transactions", transactionRoutes);
+
+// Global error handler middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: err.message || "Internal Server Error" });
+});
 
 // Start server
 app.listen(PORT, () => {

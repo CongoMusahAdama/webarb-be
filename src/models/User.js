@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
 
   googleId: {
@@ -19,14 +20,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function () {
-      return !this.googleId; // Require password only if not using Google
+      return !this.googleId;
     },
   },
 
   phoneNumber: {
     type: Number,
     required: function () {
-      return !this.googleId; // Require phoneNumber only if not using Google
+      return !this.googleId;
     },
   },
 

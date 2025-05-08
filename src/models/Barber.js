@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
 const barberSchema = new mongoose.Schema({
+
+  //linking barber flow to user
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+
   fullName:{
     type: String,
     required: true,
@@ -18,7 +26,7 @@ const barberSchema = new mongoose.Schema({
       validator: function(v){
         return /^([\w-]+(?:\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7})$/.test(v);
       },
-      message: 'Invalid email formar'
+      message: 'Invalid email format'
     },
   },
 
@@ -26,9 +34,10 @@ const barberSchema = new mongoose.Schema({
   ghanaCardNumber: {
     type: String,
     required: true,
-    minlenght: 8,
-    maxlenght: 15,
+    minlength: 8,
+    maxlength: 15,
   },
+  
 
   location: {
     type: String,
@@ -58,6 +67,21 @@ const barberSchema = new mongoose.Schema({
   portfolio: {
     type: [mongoose.Schema.Types.Mixed],
     default: [],
+  },
+
+  ghanaCardImage: {
+    type: String,
+    required: false,
+  },
+
+  medicalReport: {
+    type: String,
+    required: false,
+  },
+
+  businessRegistration: {
+    type: String,
+    required: false,
   },
 }, { timestamps: true });
 

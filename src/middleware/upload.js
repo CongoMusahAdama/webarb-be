@@ -6,11 +6,25 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === "profileImage") {
       cb(null, "uploads/profiles/"); // Save profile images in "uploads/profiles/"
+
     } else if (file.fieldname === "styleImage") {
       cb(null, "uploads/styles/"); // Save style images in "uploads/styles/"
+
+    } else if (file.fieldname === "portfolio") {
+      cb(null, "uploads/portfolio/"); // Save portfolio images in "uploads/portfolio/"
+
+     } else if (file.fieldname === "businessRegistration") {
+      cb(null, "uploads/businessRegistration/"); //save business registration in uploads/businessRegistration
+
+     } else if (file.filename === "medicalReport") {
+      cb(null, "uploads/medicalReport/"); //save medical reports in uploads/medical reports
+
+     } else if (file.filename ==="ghanaCardImage"){
+      cb(null, "uploads/ghanaCardImage/"); //save ghana card image in uploads/ghanaCardImage
+      
     } else {
       cb(null, "uploads/"); // Default upload directory
-    }
+    }   
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
