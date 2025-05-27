@@ -23,7 +23,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: "*", // allow all origins for testing
+  origin: "https://webarb.netlify.app", // allow only frontend origin
   credentials: true, // important for session cookies
 }));
 
