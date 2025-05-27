@@ -6,8 +6,6 @@ import "dotenv/config";
 import Barber from "../models/Barber.js"; // import your Barber model
 import { generateRefreshToken, generateToken } from "../utils/jwt.js";
 
-// TODO: write a unit test 
-
 //register
 export const register = async (req, res) => {
   try {
@@ -69,14 +67,12 @@ export const register = async (req, res) => {
         profileImage,
       });
     }
-
     // Generate token
     const token = jwt.sign(
       { id: newUser._id, role: newUser.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-
     // Respond
     return res.status(201).json({
       message: "User registered successfully",
