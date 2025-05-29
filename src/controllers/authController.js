@@ -9,6 +9,7 @@ import { generateRefreshToken, generateToken } from "../utils/jwt.js";
 //register
 export const register = async (req, res) => {
   try {
+    console.log("Register request body:", req.body);
     const {
       fullname,
       email,
@@ -40,7 +41,7 @@ export const register = async (req, res) => {
     const newUser = await User.create({
       fullname,
       email: email.trim().toLowerCase(),
-      phoneNumber,
+      phoneNumber: Number(phoneNumber),
       password: hashedPassword,
       role,
     });
@@ -50,7 +51,7 @@ export const register = async (req, res) => {
 
     // If user is a barber, create a linked Barber record
     if (role === "barber") {
-      if (!ghanaCardNumber || !location || !specialization || !yearsOfExperience || !profileImage) {
+      if (!ghanaCardNumber || !location || !specialization || !yearsOfExperience) {
         return res.status(400).json({ message: "Missing barber-specific fields" });
       }
 
@@ -59,12 +60,11 @@ export const register = async (req, res) => {
         userId: newUser._id,
         fullName: fullname,
         email: email.trim().toLowerCase(),
-        phoneNumber,
+        phoneNumber: Number(phoneNumber),
         ghanaCardNumber,
         location,
         specialization,
         yearsOfExperience: Number(yearsOfExperience),
-        profileImage,
       });
     }
     // Generate token
@@ -73,6 +73,7 @@ export const register = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
+    
     // Respond
     return res.status(201).json({
       message: "User registered successfully",
@@ -82,6 +83,7 @@ export const register = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Error in register:", error);
     return res.status(500).json({ message: "Error registering user", error: error.message });
   }
 }; 

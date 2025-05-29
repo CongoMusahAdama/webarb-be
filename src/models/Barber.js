@@ -46,7 +46,7 @@ const barberSchema = new mongoose.Schema({
 
   profileImage: {
     type: String,
-    required: true,
+    required: false,
   },
 
   yearsOfExperience: {

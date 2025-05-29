@@ -30,7 +30,7 @@ passport.use(new GoogleStrategy({
   }
 }));
 
-// Facebook Strategy
+// Facebook Strategy needs fixed
 passport.use(new FacebookStrategy({
   clientID: process.env.FB_APP_ID,
   clientSecret: process.env.FB_APP_SECRET,
